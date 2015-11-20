@@ -1,0 +1,17 @@
+{
+  "name": "domd",
+  "description": "Small dependency free DOM delegator",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dmitry Kuzmenkov <dmitry@wagh.ru>",
+  "license": "MIT",
+
+  "homepage": "https://github.com/dmitrykuzmenkov/domd",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmitrykuzmenkov/domd.git"
+  }
+}
