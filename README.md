@@ -33,13 +33,13 @@ d.on('click', '.js-button', function(ev, el) {
 
 Bind new listener to all elements.
 
-event - javascript event to catch (click, keyup and etc)
-selector - valid document query selector
-callback - function to callback. Arguments: event, element
+- *event* - javascript event to catch (click, keyup and etc)
+- *selector* - valid document query selector
+- *callback* - function to callback. Arguments: event, element
 
 ### off(event, selector)
 
 Disable listeners from all elements using selector.
 
-event - javascript event
-selector - valid document query selector
+- *event* - javascript event
+- *selector* - valid document query selector
