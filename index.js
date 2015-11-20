@@ -46,9 +46,9 @@ module.exports = function(node) {
     },
 
     off: function(event, selector) {
-      for (var i in listeners) {
-        if (listeners[i].selector === selector) {
-          listeners.splice(i, 1);
+      for (var i in listeners[event] || []) {
+        if (listeners[event][i].selector === selector) {
+          listeners[event].splice(i, 1);
         }
       }
     }
