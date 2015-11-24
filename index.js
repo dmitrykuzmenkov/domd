@@ -1,38 +1,4 @@
-var selector_matcher = function (element) {
-  switch (true) {
-    case element.matches !== undefined:
-      return 'matches';
-    case element.webkitMatchesSelector !== undefined:
-      return 'webkitMatchesSelector';
-    case element.msMatchesSelector !== undefined:
-      return 'msMatchesSelector';
-    case element.mozMatchesSelector !== undefined:
-      return 'mozMatchesSelector';
-    default:
-      return false;
-  }
-};
-
-var selector_matched = function (root, target) {
-  var matcher = selector_matcher(target);
-  if (matcher) {
-    return function (target, selector) {
-      return target[matcher](selector);
-    };
-  } else {
-    return function (target, selector) {
-      var elements = root.querySelectorAll(listeners[i].selector);
-
-      for (var i = 0, l = elements.length; i < l; i++) {
-        if (elements[i] === target) {
-          return true;
-        }
-      }
-
-      return false;
-    };
-  }
-};
+var selector_matcher = require('./selector_matcher.js');
 
 var event_handler = function (root, listeners) {
   return function (e) {
@@ -41,10 +7,10 @@ var event_handler = function (root, listeners) {
       target = target.parentNode;
     }
 
-    var matched = selector_matched(root, target);
+    var match_selector = selector_matcher(root, target);
 
     for (var i in listeners) {
-      if (matched(target, listeners[i].selector)) {
+      if (match_selector(target, listeners[i].selector)) {
         listeners[i].callback(e, target);
         break;
       }
