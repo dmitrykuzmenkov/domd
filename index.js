@@ -13,14 +13,25 @@ var selector_matcher = function (element) {
   }
 };
 
-var event_target = function (elements, target) {
-  for (var i = 0, l = elements.length; i < l; i++) {
-    if (elements[i] === target) {
-      return true;
-    }
-  }
+var selector_matched = function (root, target) {
+  var matcher = selector_matcher(target);
+  if (matcher) {
+    return function (target, selector) {
+      return target[matcher](selector);
+    };
+  } else {
+    return function (target, selector) {
+      var elements = root.querySelectorAll(listeners[i].selector);
 
-  return false;
+      for (var i = 0, l = elements.length; i < l; i++) {
+        if (elements[i] === target) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+  }
 };
 
 var event_handler = function (root, listeners) {
@@ -30,17 +41,7 @@ var event_handler = function (root, listeners) {
       target = target.parentNode;
     }
 
-    var matcher = selector_matcher(target);
-    var matched;
-    if (matcher) {
-      matched = function (target, selector) {
-        return target[matcher](selector);
-      };
-    } else {
-      matched = function (target, selector) {
-        return event_target(root.querySelectorAll(listeners[i].selector), target);
-      };
-    }
+    var matched = selector_matched(root, target);
 
     for (var i in listeners) {
       if (matched(target, listeners[i].selector)) {
