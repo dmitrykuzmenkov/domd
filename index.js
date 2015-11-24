@@ -1,3 +1,22 @@
+var selector_matcher = function (element) {
+  switch (true) {
+    case element.matches !== undefined:
+      return 'matches';
+      break;
+    case element.webkitMatchesSelector !== undefined:
+      return 'webkitMatchesSelector';
+      break;
+    case element.msMatchesSelector !== undefined:
+      return 'msMatchesSelector';
+      break;
+    case element.mozMatchesSelector !== undefined:
+      return 'mozMatchesSelector';
+      break;
+    default:
+      return false;
+  }
+};
+
 var event_target = function (elements, target) {
   for (var i = 0, l = elements.length; i < l; i++) {
     if (elements[i] === target) {
@@ -8,15 +27,27 @@ var event_target = function (elements, target) {
   return false;
 };
 
-var event_handler = function(root, listeners) {
+var event_handler = function (root, listeners) {
   return function (e) {
     var target = event.target;
     if (target.nodeType === 3) {
       target = target.parentNode;
     }
 
+    var matcher = selector_matcher(target);
+    var matched;
+    if (matcher) {
+      matched = function (target, selector) {
+        return target[matcher](selector);
+      };
+    } else {
+      matched = function (target, selector) {
+        return event_target(root.querySelectorAll(listeners[i].selector), target);
+      };
+    }
+
     for (var i in listeners) {
-      if (event_target(root.querySelectorAll(listeners[i].selector), target)) {
+      if (matched(target, listeners[i].selector)) {
         listeners[i].callback(e, target);
         break;
       }
@@ -24,10 +55,10 @@ var event_handler = function(root, listeners) {
   };
 };
 
-module.exports = function(node) {
+module.exports = function (node) {
   var listeners = [];
   return {
-    on: function(event, selector, callback) {
+    on: function (event, selector, callback) {
       var add_listener = false;
 
       if (!listeners[event]) {
@@ -45,7 +76,7 @@ module.exports = function(node) {
       });
     },
 
-    off: function(event, selector) {
+    off: function (event, selector) {
       for (var i in listeners[event] || []) {
         if (listeners[event][i].selector === selector) {
           listeners[event].splice(i, 1);
