@@ -2,16 +2,12 @@ var selector_matcher = function (element) {
   switch (true) {
     case element.matches !== undefined:
       return 'matches';
-      break;
     case element.webkitMatchesSelector !== undefined:
       return 'webkitMatchesSelector';
-      break;
     case element.msMatchesSelector !== undefined:
       return 'msMatchesSelector';
-      break;
     case element.mozMatchesSelector !== undefined:
       return 'mozMatchesSelector';
-      break;
     default:
       return false;
   }
