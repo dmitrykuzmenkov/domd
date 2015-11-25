@@ -14,7 +14,15 @@ npm install domd
 Follow the example:
 
 ```html
-<button class="js-button">Click me</button>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <button class="js-button">Click me</button>
+</body>
+</html>
 ```
 
 ```javascript
