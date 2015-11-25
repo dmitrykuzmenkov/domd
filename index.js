@@ -1,4 +1,4 @@
-var selector_matcher = require('./selector_matcher.js');
+var match_selector = require('./match_selector.js');
 
 var event_handler = function (root, listeners) {
   return function (e) {
@@ -7,10 +7,8 @@ var event_handler = function (root, listeners) {
       target = target.parentNode;
     }
 
-    var match_selector = selector_matcher(root, target);
-
     for (var i in listeners) {
-      if (match_selector(target, listeners[i].selector)) {
+      if (match_selector(root, target, listeners[i].selector)) {
         listeners[i].callback(e, target);
         break;
       }
