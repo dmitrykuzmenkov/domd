@@ -1,7 +1,7 @@
 {
   "name": "domd",
   "description": "Small dependency free DOM delegator",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
