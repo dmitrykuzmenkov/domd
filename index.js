@@ -66,7 +66,6 @@ module.exports = function (node) {
         selector: selector,
         callback: callback
       });
-      console.log(listeners);
     },
 
     off: function (event, selector) {
