@@ -2,14 +2,14 @@ var match_selector = require('./match_selector.js');
 
 var event_handler = function (root) {
   return function (e) {
-    var target = event.target;
+    var target = e.target;
 
     if (target.nodeType === 3) {
       target = target.parentNode;
     }
 
     var list = [];
-    var phase = event.eventPhase || ( event.target !== event.currentTarget ? 3 : 2 );
+    var phase = e.eventPhase || ( e.target !== e.currentTarget ? 3 : 2 );
 
     switch (phase) {
       case 1: //Event.CAPTURING_PHASE:
