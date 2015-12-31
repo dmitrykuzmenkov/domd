@@ -31,11 +31,20 @@ var event_handler = function (root) {
       break;
     }
 
-    for (var i in list) {
-      if (match_selector(root, target, list[i].selector)) {
-        list[i].callback(e, target);
+    // Find triggered element cuz we can get child of it in e.target
+    while (target) {
+      for (var i in list) {
+        if (match_selector(root, target, list[i].selector)) {
+          list[i].callback(e, target);
+          break;
+        }
+      }
+
+      if (target === root) {
         break;
       }
+
+      target = target.parentElement;
     }
   };
 };
