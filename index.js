@@ -19,7 +19,7 @@ var event_handler = function (root, listeners) {
 module.exports = function (node) {
   var listeners = [];
   return {
-    on: function (event, selector, callback) {
+    on: function (event, selector, callback, use_capture) {
       var add_listener = false;
 
       if (!listeners[event]) {
@@ -28,7 +28,7 @@ module.exports = function (node) {
       }
 
       if (add_listener) {
-        node.addEventListener(event, event_handler(node, listeners[event]));
+        node.addEventListener(event, event_handler(node, listeners[event]), !!use_capture);
       }
 
       listeners[event].push({
