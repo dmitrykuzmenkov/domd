@@ -16,27 +16,33 @@ var event_handler = function (root, listeners) {
   };
 };
 
+// 0 - bubbling, 1 - capturing
+// var listeners = [{}, {}];
+var listeners = [{}, {}];
+
 module.exports = function (node) {
-  var listeners = [];
   return {
     on: function (event, selector, callback, use_capture) {
-      if (!listeners[event]) {
-        listeners[event] = [];
-        node.addEventListener(event, event_handler(node, listeners[event]), !!use_capture);
+      var map = listeners[use_capture ? 1 : 0];
+      if (!map[event]) {
+        map[event] = [];
+        node.addEventListener(event, event_handler(node, map[event]), !!use_capture);
       }
 
-      listeners[event].push({
+      map[event].push({
         selector: selector,
         callback: callback
       });
     },
 
     off: function (event, selector) {
-      for (var i in listeners[event] || []) {
-        if (listeners[event][i].selector === selector) {
-          listeners[event].splice(i, 1);
+      listeners.forEach(function (map) {
+        for (var i in map[event] || []) {
+          if (map[event][i].selector === selector) {
+            map[event].splice(i, 1);
+          }
         }
-      }
+      });
     }
   };
 };
