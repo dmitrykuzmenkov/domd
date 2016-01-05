@@ -2,6 +2,7 @@ var match_selector = require('./match_selector.js');
 
 var event_handler = function (root) {
   return function (e) {
+    var ret;
     var target = e.target;
 
     if (target.nodeType === 3) {
@@ -38,6 +39,12 @@ var event_handler = function (root) {
           list[i].callback(e, target);
           break;
         }
+      }
+
+      // If callback returned false - stop next propaganation
+      if (ret === false) {
+        e.preventDefault();
+        return;
       }
 
       if (target === root) {
