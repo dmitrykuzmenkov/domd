@@ -36,15 +36,15 @@ var event_handler = function (root) {
     while (target) {
       for (var i in list) {
         if (match_selector(root, target, list[i].selector)) {
-          list[i].callback(e, target);
+          ret = list[i].callback(e, target);
           break;
         }
-      }
 
-      // If callback returned false - stop next propaganation
-      if (ret === false) {
-        e.preventDefault();
-        return;
+        // If callback returned false - stop next propaganation
+        if (ret === false) {
+          e.preventDefault();
+          return;
+        }
       }
 
       if (target === root) {
