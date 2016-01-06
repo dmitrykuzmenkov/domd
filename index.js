@@ -1,7 +1,10 @@
 var match_selector = require('./match_selector.js');
 
-var event_handler = function (root, listeners) {
-  return function (e) {
+var DOMD = function (node) {
+  // 0 - bubbling, 1 - capturing
+  var listeners = [{}, {}];
+
+  var handler = function (e) {
     var ret;
     var target = e.target;
 
@@ -35,7 +38,7 @@ var event_handler = function (root, listeners) {
     // Find triggered element cuz we can get child of it in e.target
     while (target) {
       for (var i in list) {
-        if (match_selector(root, target, list[i].selector)) {
+        if (match_selector(node, target, list[i].selector)) {
           ret = list[i].callback(e, target);
           break;
         }
@@ -47,41 +50,40 @@ var event_handler = function (root, listeners) {
         }
       }
 
-      if (target === root) {
+      if (target === node) {
         break;
       }
 
       target = target.parentElement;
     }
   };
+
+  this.on = function (event, selector, callback, use_capture) {
+    var map = listeners[use_capture ? 1 : 0];
+    if (!map[event]) {
+      map[event] = [];
+      node.addEventListener(event, handler, !!use_capture);
+    }
+
+    map[event].push({
+      selector: selector,
+      callback: callback
+    });
+  };
+
+  this.off = function (event, selector) {
+    listeners.forEach(function (map) {
+      for (var i in map[event] || []) {
+        if (map[event][i].selector === selector) {
+          map[event].splice(i, 1);
+        }
+      }
+    });
+  };
+
+  return this;
 };
 
 module.exports = function (node) {
-  // 0 - bubbling, 1 - capturing
-  var listeners = [{}, {}];
-
-  return {
-    on: function (event, selector, callback, use_capture) {
-      var map = listeners[use_capture ? 1 : 0];
-      if (!map[event]) {
-        map[event] = [];
-        node.addEventListener(event, event_handler(node, listeners), !!use_capture);
-      }
-
-      map[event].push({
-        selector: selector,
-        callback: callback
-      });
-    },
-
-    off: function (event, selector) {
-      listeners.forEach(function (map) {
-        for (var i in map[event] || []) {
-          if (map[event][i].selector === selector) {
-            map[event].splice(i, 1);
-          }
-        }
-      });
-    }
-  };
+  return new DOMD(node);
 };
