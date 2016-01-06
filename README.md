@@ -44,6 +44,7 @@ Bind new listener to all elements.
 - *event* - javascript event to catch (click, keyup and etc)
 - *selector* - valid document query selector
 - *callback* - function to callback. Arguments: event, element
+  You can return false from callback to preventDefault and stop next handler searching.
 - *use_capture* - use capture or not, default false
 
 ### off(event, selector)
