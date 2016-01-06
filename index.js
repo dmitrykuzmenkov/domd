@@ -1,6 +1,6 @@
 var match_selector = require('./match_selector.js');
 
-var event_handler = function (root) {
+var event_handler = function (root, listeners) {
   return function (e) {
     var ret;
     var target = e.target;
@@ -56,17 +56,16 @@ var event_handler = function (root) {
   };
 };
 
-// 0 - bubbling, 1 - capturing
-// var listeners = [{}, {}];
-var listeners = [{}, {}];
-
 module.exports = function (node) {
+  // 0 - bubbling, 1 - capturing
+  var listeners = [{}, {}];
+
   return {
     on: function (event, selector, callback, use_capture) {
       var map = listeners[use_capture ? 1 : 0];
       if (!map[event]) {
         map[event] = [];
-        node.addEventListener(event, event_handler(node), !!use_capture);
+        node.addEventListener(event, event_handler(node, listeners), !!use_capture);
       }
 
       map[event].push({
