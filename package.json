@@ -2,7 +2,7 @@
   "name": "domd",
   "description": "Small dependency free DOM delegator",
   "keywords": ["DOM", "delegate", "event", "handle", "domd"],
-  "version": "0.7.1",
+  "version": "0.7.2",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

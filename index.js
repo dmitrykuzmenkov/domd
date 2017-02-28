@@ -36,9 +36,10 @@ var DOMD = function (node) {
     }
 
     // Find triggered element cuz we can get child of it in e.target
+    var parent = target !== node && target.parentElement ? target.parentElement : target;
     while (target) {
       for (var i in list) {
-        if (match_selector(node, target, list[i].selector)) {
+        if (match_selector(parent, target, list[i].selector)) {
           ret = list[i].callback(e, target);
           break;
         }
